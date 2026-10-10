@@ -1,0 +1,14 @@
+{
+  "name": "test-manager-library-3413974-tool",
+  "version": "1.0.0",
+  "description": "Herramienta CLI de siembra de datos de demostración vía API REST para Manager Library",
+  "main": "seed.js",
+  "type": "module",
+  "scripts": {
+    "start": "node seed.js",
+    "seed": "node seed.js"
+  },
+  "keywords": ["sdd", "library", "seeder", "adso-3413974"],
+  "author": "ADSO 3413974",
+  "license": "ISC"
+}
