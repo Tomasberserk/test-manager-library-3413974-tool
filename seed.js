@@ -245,11 +245,13 @@ async function main() {
   }
 
   // Préstamos adicionales para alcanzar >= 15
-  while (loansCount < 15) {
-    const mem = createdMembers[3]; // socio 3
+  let mCursor = 3;
+  while (loansCount < 15 && mCursor < createdMembers.length + 10) {
+    const mem = createdMembers[mCursor % createdMembers.length];
+    mCursor++;
     const book = createdBooks[(bCursor++) % createdBooks.length];
     try {
-      await request('/loans', {
+      const loan = await request('/loans', {
         method: 'POST',
         body: {
           member_id: mem.id,
@@ -258,8 +260,15 @@ async function main() {
         }
       }, token);
       loansCount++;
+      
+      // Devolverlo para mantener capacidad de préstamo en el socio
+      if (loan.items && loan.items.length > 0) {
+        await request(`/loans/${loan.id}/items/${loan.items[0].id}/return`, {
+          method: 'POST'
+        }, token);
+      }
     } catch (e) {
-      break;
+      console.warn('Préstamo adicional omitido:', e.message);
     }
   }
 
